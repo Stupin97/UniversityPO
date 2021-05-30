@@ -1,0 +1,98 @@
+﻿@using UniversityPO.Domain.Dto
+@using static UniversityPO.Content.ColorTZ
+@model List<EventDto>
+
+@{
+    var events = Model;
+
+    if(events != null)
+    {
+        events = events.OrderBy(c => c.DatePublic).ToList();
+    }
+}
+
+<style>
+    #navbar {
+        list-style: none;
+        margin: 0;
+        padding-left: 0;
+        margin-top: 25px;
+        height: 50px;
+    }
+
+    .linq-personal {
+        text-decoration: none;
+        color: #fff; /*меняем цвет ссылок*/
+        padding: 0px 15px; /*добавляем отступ*/
+        font-family: arial; /*меняем шрифт*/
+        line-height: 50px; /*ровняем меню по вертикали*/
+        display: block;
+        -moz-transition: all 0.3s 0.01s ease; /*делаем плавный переход*/
+        -o-transition: all 0.3s 0.01s ease;
+        -webkit-transition: all 0.3s 0.01s ease;
+    }
+
+    .linq-personal:hover {
+        background: @Colors[1];
+    }
+
+    .gor-li {
+        float: left;
+    }
+
+    .form-text {
+        float: left;
+        width: 228px;
+    }
+
+    .search-button {
+        margin-top: 4px;
+        margin-left: 5px;
+    }
+
+    .important {
+        /*background-color: red;*/
+        border: 3px solid red;
+    }
+
+    .urgently {
+        /*background-color: yellow;*/
+        border: 3px solid yellow;
+    }
+</style>
+<div class="page-container">
+    <div class="page-header">
+        <div class="page-header-container">
+            <ul id="navbar" style="background-color: @Colors[0];">
+                <li class="gor-li">@Html.ActionLink("Личная карточка", "PersonalPage", "Home", new { userId = ViewBag.userId }, new { @class = "linq-personal" })</li>
+                <li class="gor-li">@Html.ActionLink("Расписание", "Schedule", "Home", new { userId = ViewBag.userId }, new { @class = "linq-personal" })</li>
+                <li class="gor-li"><a class="linq-personal" asp-area="" asp-controller="Home" asp-action="TeachersList">Преподаватели</a></li>
+                <li disabled class="gor-li"><a class="linq-personal" href="#">Новости</a></li>
+                <li style="display: @(ViewBag.TypeUser == "student" ? "block" : "none")" class="gor-li">@Html.ActionLink("Успеваемость", "StudentAcademicPerfomance", "Home", new { studentId = ViewBag.StudentId }, new { @class = "linq-personal" })</li>
+                <li class="gor-li"><a class="linq-personal" asp-area="" asp-controller="Home" asp-action="Index">Выход</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="content">
+        <div class="row">
+            <div class="col-12">
+                <h1>Новости и события</h1>
+                @if (events.Count == 0)
+                {
+                    <h2>Пока нет новостей и событий!</h2>
+                }
+                else
+                {
+                    @for (int i = 0; i < events.Count; i++)
+                    {
+                        <hr />
+                        <div class="list-event event-@(i+1) @((bool)events[i].IsImportant ? "important" : (bool)events[i].IsUrgently ? "urgently" : "")">
+                            <span>Дата публикации: @events[i].DatePublic.Value.Day/@events[i].DatePublic.Value.Month/@events[i].DatePublic.Value.Year</span>
+                            <h4>@events[i].Text</h4><br />
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>

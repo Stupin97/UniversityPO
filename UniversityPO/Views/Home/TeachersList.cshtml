@@ -1,0 +1,90 @@
+﻿@using UniversityPO.Domain.Dto
+@using static UniversityPO.Content.ColorTZ
+@using System.Linq;
+@model List<TeacherInfoDto>
+
+@{
+    var teacherInfoDtos = Model;
+
+    teacherInfoDtos = teacherInfoDtos.OrderBy(c => c.Surname).ToList();
+}
+<style>
+    #navbar {
+        list-style: none;
+        margin: 0;
+        padding-left: 0;
+        margin-top: 25px;
+        height: 50px;
+    }
+
+    .linq-personal {
+        text-decoration: none;
+        color: #fff; /*меняем цвет ссылок*/
+        padding: 0px 15px; /*добавляем отступ*/
+        font-family: arial; /*меняем шрифт*/
+        line-height: 50px; /*ровняем меню по вертикали*/
+        display: block;
+        -moz-transition: all 0.3s 0.01s ease; /*делаем плавный переход*/
+        -o-transition: all 0.3s 0.01s ease;
+        -webkit-transition: all 0.3s 0.01s ease;
+    }
+
+    .linq-personal:hover {
+        background: @Colors[1];
+    }
+
+    .gor-li {
+        float: left;
+    }
+
+    .form-text {
+        float: left;
+        width: 228px;
+    }
+
+    .search-button {
+        margin-top: 4px;
+        margin-left: 5px;
+    }
+</style>
+<div class="page-container">
+    <div class="page-header">
+        <div class="page-header-container">
+            <ul id="navbar" style="background-color: @Colors[0];">
+                <li class="gor-li">@Html.ActionLink("Личная карточка", "PersonalPage", "Home", new { userId = ViewBag.userId }, new { @class = "linq-personal" })</li>
+                <li class="gor-li">@Html.ActionLink("Расписание", "Schedule", "Home", new { userId = ViewBag.userId }, new { @class = "linq-personal" })</li>
+                <li disabled class="gor-li"><a class="linq-personal" href="#">Преподаватели</a></li>
+                <li class="gor-li"><a class="linq-personal" asp-area="" asp-controller="Home" asp-action="News">Новости</a></li>
+                <li style="display: @(ViewBag.TypeUser == "student" ? "block" : "none")" class="gor-li">@Html.ActionLink("Успеваемость", "StudentAcademicPerfomance", "Home", new { studentId = ViewBag.StudentId }, new { @class = "linq-personal" })</li>
+                <li class="gor-li"><a class="linq-personal" asp-area="" asp-controller="Home" asp-action="Index">Выход</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="content">
+        <div class="row">
+            <div class="col-8">
+                <h1>Преподавательский состав</h1>
+                <hr />
+                @for (int i = 0; i < teacherInfoDtos.Count; i++)
+                {
+                    <div class="list-teacher teacher-@(i+1)">
+                        <hr />
+                        <h3 class="teacher-name">@teacherInfoDtos[i].Surname @teacherInfoDtos[i].Name</h3>
+                        <span>@teacherInfoDtos[i].AcademicDegree</span><br />
+                        <span>@teacherInfoDtos[i].Position</span><br />
+                        <span>Преподаваемая дисциплина: </span>
+                        <span><b>@teacherInfoDtos[i].DisciplineName</b></span><br />
+                        <span>Контактная информация: </span><br />
+                        <span>@teacherInfoDtos[i].Phone</span><br />
+                        <a disabled href="#">@teacherInfoDtos[i].Email</a>
+                    </div>
+                }
+                <span><b>Заметили ошибку? звони <a href="#">+79969376719</a></b></span>
+            </div>
+            <div class="col-4 search-teacher">
+                <input type="text" class="form-text" placeholder="Поиск по преподавателям" value=""/>
+                <button class="search-button" type="submit">Найти</button>
+            </div>
+        </div>
+    </div>
+</div>

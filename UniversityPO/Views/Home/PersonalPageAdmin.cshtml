@@ -1,0 +1,73 @@
+﻿@using static UniversityPO.Content.ColorTZ
+<style>
+    .c {
+        border: 1px solid #333;
+        display: inline-block;
+        padding: 5px 15px;
+        text-decoration: none;
+        color: #000;
+    }
+
+        .c:hover {
+            box-shadow: 0 0 5px rgba(0,0,0,0.3);
+            background: linear-gradient(to bottom, #fcfff4, #e9e9ce);
+            color: #a00;
+        }
+
+    .choice {
+        border: 1px solid #333;
+        width: 300px;
+        height: 77px;
+        padding: 20px;
+        margin-top: 10px;
+        margin-right: -1px
+    }
+
+    /*    .edit {
+        width: 300px;
+        height: 300px;
+    }*/
+</style>
+<div class="page-container">
+    <div class="page-header">
+        <h1>Старница администратора</h1>
+        <ul id="navbar" style="background-color: @Colors[0];">
+            <li class="gor-li"><a class="linq-personal" asp-area="" asp-controller="Home" asp-action="Index">Выход</a></li>
+        </ul>
+
+    </div>
+    <div class="content">
+        <div class="row">
+            <div class="col-4 choice">
+                @Html.ActionLink("Добавить преподавателя", "AdminTeacher", "Home", null, new { id = "cr-teacher", @class = "c" })
+            </div>
+            <div class="col-8 choice edit">
+                @Html.ActionLink("Изменить преподавателя", "AdminTeacher", "Home", new { teacherId = "0" }, new { id = "a-teacher", @class = "c" })
+                <span>Введите Id Преподавателя</span>
+                <input type="text" size="20" id="teac" placeholder="@(ViewBag.MesTeacher == null ? "TeacherId" : ViewBag.MesTeacher)" class="text-teacher" value="">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4 choice">
+                @Html.ActionLink("Добавить студента", "AdminStudent", "Home", null, new { id = "cr-stud", @class = "c" })
+            </div>
+            <div class="col-8 choice edit">
+                @Html.ActionLink("Изменить студента", "AdminStudent", "Home", new { studentId = "1" }, new { id = "a-stud", @class = "c" })
+                <span>Введите Id Студента</span>
+                <input type="text" size="20" name="stud" id="stud" placeholder="@(ViewBag.Mes == null ? "StudentId" : ViewBag.Mes)" class="text-student" value="">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4 choice">
+                @Html.ActionLink("Добавить расписание", "AdminSchedule", "Home", null, new { id = "cr-schedule", @class = "c" })
+            </div>
+            <div class="col-8 choice edit">
+                @Html.ActionLink("Изменить расписание", "AdminSchedule", "Home", new { scheduleId = "1" }, new { id = "a-schedule", @class = "c" })
+                <span>Введите Id Расписания</span>
+                <input type="text" size="20" name="schedule" id="schedule" placeholder="@(ViewBag.MesSchedule == null ? "ScheduleId" : ViewBag.MesSchedule)" class="text-schedule" value="">
+            </div>
+        </div>
+        <br />
+        @ViewBag.Done
+    </div>
+</div>

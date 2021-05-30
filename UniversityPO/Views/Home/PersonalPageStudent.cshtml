@@ -1,0 +1,64 @@
+﻿@using UniversityPO.Domain.Dto
+@using static UniversityPO.Content.ColorTZ
+@model StudentDto
+
+<style>
+    #navbar {
+        list-style: none;
+        margin: 0;
+        padding-left: 0;
+        margin-top: 25px; 
+        height: 50px; 
+    }
+
+    .linq-personal {
+        text-decoration: none;
+        color: #fff; /*меняем цвет ссылок*/
+        padding: 0px 15px; /*добавляем отступ*/
+        font-family: arial; /*меняем шрифт*/
+        line-height: 50px; /*ровняем меню по вертикали*/
+        display: block;
+        -moz-transition: all 0.3s 0.01s ease; /*делаем плавный переход*/
+        -o-transition: all 0.3s 0.01s ease;
+        -webkit-transition: all 0.3s 0.01s ease;
+    }
+
+    .linq-personal:hover {
+        background: @Colors[1];
+    }
+
+    .gor-li {
+        float: left;
+    }
+</style>
+<div class="page-container">
+    <div class="page-header">
+        <div class="page-header-container">
+            <ul id="navbar" style="background-color: @Colors[0];">
+                <li disabled class="gor-li"><a class="linq-personal" href="#">Личная карточка</a></li>
+                <li class="gor-li">@Html.ActionLink("Расписание", "Schedule", "Home", new { userId = Model.StudentId }, new { @class = "linq-personal" })</li>
+                <li class="gor-li"><a class="linq-personal" asp-area="" asp-controller="Home" asp-action="TeachersList">Преподаватели</a></li>
+                <li class="gor-li"><a class="linq-personal" asp-area="" asp-controller="Home" asp-action="News">Новости</a></li>
+                <li class="gor-li">@Html.ActionLink("Успеваемость", "StudentAcademicPerfomance", "Home", new { studentId = Model.StudentId }, new { @class = "linq-personal" })</li>
+                @*<li class="gor-li"><a class="linq-personal" asp-area="" asp-controller="Home" asp-action="StudentAcademicPerfomance">Оценки</a></li>*@
+                <li class="gor-li"><a class="linq-personal" asp-area="" asp-controller="Home" asp-action="Index">Выход</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="content">
+        <div class="row">
+            <div class="col-6">
+                <h1>Личная карточка студента</h1>
+                <span><b>Фамилия:</b> @Model.Surname</span><br />
+                <span><b>Имя:</b> @Model.Name</span><br />
+                <span><b>Группа:</b> @Model.GroupName</span><br />
+                <span style="display:@((bool)Model.IsHeadman ? "block" : "none")"><b>Староста</b></span>
+                <hr>
+                <h3>Контактная информация</h3>
+                <span><b>Телефон:</b> @Model.Phone</span><br />
+                <span><b>Email:</b> @Model.Email</span><br />
+                <span><b>Заметили ошибку? звони +79969376719</b></span>
+            </div>
+        </div>
+    </div>
+</div>

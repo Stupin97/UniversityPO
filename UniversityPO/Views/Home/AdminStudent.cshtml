@@ -1,0 +1,50 @@
+﻿@using UniversityPO.Domain.Dto
+@using static UniversityPO.Content.ColorTZ
+@model StudentDto
+
+@{
+    var student = Model;
+}
+
+@using (Html.BeginForm("AdminStudent", "Home", FormMethod.Post))
+{
+    <p>
+        <label>Id Студента</label><br />
+        <input type="text" size="20" placeholder="StudentId" class="text-teacher" name="StudentId" value="@(student == null ? "" : student.StudentId)" @*@(student == null ? "" : "disabled")*@>
+    </p>
+    <p>
+        <label>Id Группы</label><br />
+        <input type="text" size="20" placeholder="GroupId" class="text-teacher" name="GroupId" value="@(student == null ? "" : student.GroupId)">
+    </p>
+    <p>
+        <label>Имя</label><br />
+        <input type="text" size="20" placeholder="Name" class="text-teacher" name="Name" value="@(student == null ? "" : student.Name)">
+    </p>
+    <p>
+        <label>Фамилия</label><br />
+        <input type="text" size="20" placeholder="Surname" class="text-teacher" name="Surname" value="@(student == null ? "" : student.Surname)">
+    </p>
+    <p>
+        <label>Телефон</label><br />
+        <input type="text" size="20" placeholder="Phone" class="text-teacher" name="Phone" value="@(student == null ? "" : student.Phone)">
+    </p>
+    <p>
+        <label>Email</label><br />
+        <input type="text" size="20" placeholder="Email" class="text-teacher" name="Email" value="@(student == null ? "" : student.Email)">
+    </p>
+    <p>
+        <label>Логин</label><br />
+        <input type="text" size="20" placeholder="Login" class="text-teacher" name="Login" value="@(student == null ? "" : student.Login)">
+    </p>
+    <p>
+        <label>Пароль</label><br />
+        <input type="password" size="20" placeholder="TeacherId" class="text-teacher" name="Password" value="@(student == null ? "" : student.Password)">
+    </p>
+    <p>
+        <label>Староста?</label><br />
+        <input type="text" size="20" placeholder="IsHeadman" class="text-teacher" name="IsHeadman" value="@(student == null ? "" : student.IsHeadman.ToString())">
+    </p>
+    <p>
+        <input type="submit" value="@(student == null ? "Создать" : "Редактировать")" />
+    </p>
+}

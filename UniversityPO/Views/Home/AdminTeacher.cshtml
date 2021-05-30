@@ -1,0 +1,54 @@
+﻿@using UniversityPO.Domain.Dto
+@using static UniversityPO.Content.ColorTZ
+@model Teacher_C_E_Dto
+
+@{
+    var teacher = Model;
+}
+
+@using (Html.BeginForm("AdminTeacher", "Home", FormMethod.Post))
+{
+    <p>
+        <label>Id Преподавателя</label><br />
+        <input type="text" size="20" placeholder="TeacherId" class="text-teacher" name="TeacherId" value="@(teacher == null ? "" : teacher.TeacherId.ToString())" @*@(student == null ? "" : "disabled")*@>
+    </p>
+    <p>
+        <label>Id дисциплины</label><br />
+        <input type="text" size="20" placeholder="DisciplineId" class="text-teacher" name="DisciplineId" value="@(teacher == null ? "" : teacher.DisciplineId.ToString())">
+    </p>
+    <p>
+        <label>Имя</label><br />
+        <input type="text" size="20" placeholder="Name" class="text-teacher" name="Name" value="@(teacher == null ? "" : teacher.Name)">
+    </p>
+    <p>
+        <label>Фамилия</label><br />
+        <input type="text" size="20" placeholder="Surname" class="text-teacher" name="Surname" value="@(teacher == null ? "" : teacher.Surname)">
+    </p>
+    <p>
+        <label>Id позиции</label><br />
+        <input type="text" size="20" placeholder="PositionId" class="text-teacher" name="PositionId" value="@(teacher == null ? "" : teacher.PositionId.ToString())">
+    </p>
+    <p>
+        <label>Id ученой степени</label><br />
+        <input type="text" size="20" placeholder="AcademicDegreeId" class="text-teacher" name="AcademicDegreeId" value="@(teacher == null ? "" : teacher.AcademicDegreeId.ToString())">
+    </p>
+    <p>
+        <label>Телефон</label><br />
+        <input type="text" size="20" placeholder="Phone" class="text-teacher" name="Phone" value="@(teacher == null ? "" : teacher.Phone)">
+    </p>
+    <p>
+        <label>Email</label><br />
+        <input type="text" size="20" placeholder="Email" class="text-teacher" name="Email" value="@(teacher == null ? "" : teacher.Email)">
+    </p>
+    <p>
+        <label>Логин</label><br />
+        <input type="text" size="20" placeholder="Login" class="text-teacher" name="Login" value="@(teacher == null ? "" : teacher.Login)">
+    </p>
+    <p>
+        <label>Пароль</label><br />
+        <input type="password" size="20" placeholder="Password" class="text-teacher" name="Password" value="@(teacher == null ? "" : teacher.Password)">
+    </p>
+    <p>
+        <input type="submit" value="@(teacher == null ? "Создать" : "Редактировать")" />
+    </p>
+}

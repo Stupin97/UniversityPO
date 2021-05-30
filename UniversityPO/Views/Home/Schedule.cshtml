@@ -1,0 +1,161 @@
+﻿@using UniversityPO.Domain.Dto
+@using static UniversityPO.Content.ColorTZ
+@model ReportSchedule
+
+@{
+    var report = Model;
+
+    bool isPopDiscipline = false;
+}
+
+<style>
+    #navbar {
+        list-style: none;
+        margin: 0;
+        padding-left: 0;
+        margin-top: 25px;
+        height: 50px;
+    }
+
+    .linq-personal {
+        text-decoration: none;
+        color: #fff; /*меняем цвет ссылок*/
+        padding: 0px 15px; /*добавляем отступ*/
+        font-family: arial; /*меняем шрифт*/
+        line-height: 50px; /*ровняем меню по вертикали*/
+        display: block;
+        -moz-transition: all 0.3s 0.01s ease; /*делаем плавный переход*/
+        -o-transition: all 0.3s 0.01s ease;
+        -webkit-transition: all 0.3s 0.01s ease;
+    }
+
+    .linq-personal:hover {
+        background: @Colors[1];
+    }
+
+    .gor-li {
+        float: left;
+    }
+
+    .form-text {
+        float: left;
+        width: 228px;
+    }
+
+    .search-button {
+        margin-top: 4px;
+        margin-left: 5px;
+    }
+
+    .important {
+        /*background-color: red;*/
+        border: 3px solid red;
+    }
+
+    .urgently {
+        /*background-color: yellow;*/
+        border: 3px solid yellow;
+    }
+
+    .day {
+        border: 1px solid #c0d2de;
+        width: 130px;
+        height: 50px;
+        text-align: center;
+    }
+
+    .time {
+        border: 1px solid #c0d2de;
+        width: 130px;
+        height: 150px;
+        text-align: center;
+    }
+
+    .discipline-td {
+        width: 130px;
+        height: 150px;
+        border: 1px solid #c0d2de;
+    }
+</style>
+<div class="page-container">
+    <div class="page-header">
+        <div class="page-header-container">
+            <ul id="navbar" style="background-color: @Colors[0];">
+                <li class="gor-li">@Html.ActionLink("Личная карточка", "PersonalPage", "Home", new { userId = ViewBag.userId }, new { @class = "linq-personal" })</li>
+                <li disabled class="gor-li"><a class="linq-personal" href="#">Расписание</a></li>
+                <li class="gor-li"><a class="linq-personal" asp-area="" asp-controller="Home" asp-action="TeachersList">Преподаватели</a></li>
+                <li class="gor-li"><a class="linq-personal" asp-area="" asp-controller="Home" asp-action="News">Новости</a></li>
+                <li style="display: @(ViewBag.TypeUser == "student" ? "block" : "none")" class="gor-li">@Html.ActionLink("Успеваемость", "StudentAcademicPerfomance", "Home", new { studentId = ViewBag.StudentId }, new { @class = "linq-personal" })</li>
+                <li class="gor-li"><a class="linq-personal" asp-area="" asp-controller="Home" asp-action="Index">Выход</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="content">
+        <div class="row">
+            <div class="col-12">
+                <h2 align="center">Ваше расписание: @(ViewBag.TypeUser == "teacher" ? report.Shedules[0].TeacherSurname + " " + report.Shedules[0].TeacherName
+                                                                                    : report.Shedules[0].Surname + " " + report.Shedules[0].Surname + " гр. " + report.Shedules[0].GroupId)</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="day">
+                                <div>
+                                    Время
+                                </div>
+                            </th>
+                            @foreach (var day in report.DaysName)
+                            {
+                                <th class="day" >
+                                    <div>
+                                        @day.Name 
+                                    </div>
+                                </th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for(int i = 0; i < report.NumbersLesson.Count; i++)
+                        {
+                        <tr>
+                            <td class="time">
+                                <div>
+                                    <b>@report.time[i]</b>
+                                </div>
+                            </td>
+                            @for (int day = 0; day < report.DaysName.Count; day++)
+                            {
+                                isPopDiscipline = false;
+                                @foreach (var discipline in report.Shedules)
+                                {
+                                    @if (discipline.NumberLessonId - 1 == i)
+                                    {
+                                        @if (discipline.DayOfWeekId - 1 == day)
+                                        {
+                                            isPopDiscipline = true;
+                                            <td class="discipline-td">
+                                                <div class="discipline">
+                                                    <div class="discipline-content">
+                                                        <b>@discipline.DisciplineName</b> (@discipline.LessonType)<br />
+                                                        @(ViewBag.TypeUser == "student" ?  discipline.TeacherSurname + discipline.TeacherName : "")<br />
+                                                        ауд. @discipline.Classroom
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        }
+                                    }
+                                }
+                                @if (!isPopDiscipline)
+                                {
+                                    <td class="discipline-td">
+                                    </td>
+                                }
+                            }
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>

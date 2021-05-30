@@ -1,0 +1,124 @@
+﻿@using UniversityPO.Domain.Dto
+@using static UniversityPO.Content.ColorTZ
+@using System.Linq;
+@model List<AcademicPerfomanceDto>
+
+@{
+    var academicPerfomances = Model;
+
+    var semesters = academicPerfomances
+        .OrderBy(c => c.Semester)
+        .Where(c => c.Semester != null)
+        .Select(c => (int)c.Semester)
+        .Distinct()
+        .ToList();
+
+    List<Tuple<int, List<AcademicPerfomanceDto>>> listSemesterDiscipline = new List<Tuple<int, List<AcademicPerfomanceDto>>>();
+
+    foreach (var semester in semesters)
+    {
+        List<AcademicPerfomanceDto> temp = new List<AcademicPerfomanceDto>();
+        for (int i = 0; i < academicPerfomances.Count; i++)
+        {
+            if (semester == academicPerfomances[i].Semester)
+            {
+                temp.Add(academicPerfomances[i]);
+            }
+        }
+
+        listSemesterDiscipline.Add(Tuple.Create<int, List<AcademicPerfomanceDto>>(semester, temp));
+    }
+}
+<style>
+    #navbar {
+        list-style: none;
+        margin: 0;
+        padding-left: 0;
+        margin-top: 25px;
+        height: 50px;
+    }
+
+    .linq-personal {
+        text-decoration: none;
+        color: #fff; /*меняем цвет ссылок*/
+        padding: 0px 15px; /*добавляем отступ*/
+        font-family: arial; /*меняем шрифт*/
+        line-height: 50px; /*ровняем меню по вертикали*/
+        display: block;
+        -moz-transition: all 0.3s 0.01s ease; /*делаем плавный переход*/
+        -o-transition: all 0.3s 0.01s ease;
+        -webkit-transition: all 0.3s 0.01s ease;
+    }
+
+    .linq-personal:hover {
+        background: @Colors[1];
+    }
+
+    .gor-li {
+        float: left;
+    }
+</style>
+<div class="page-container">
+    <div class="page-header">
+        <div class="page-header-container">
+            <ul id="navbar" style="background-color: @Colors[0];">
+                <li class="gor-li">@Html.ActionLink("Личная карточка", "PersonalPage", "Home", new { userId = ViewBag.StudentId }, new { @class = "linq-personal" })</li>
+                <li class="gor-li">@Html.ActionLink("Расписание", "Schedule", "Home", new { userId = ViewBag.StudentId }, new { @class = "linq-personal" })</li>
+                <li class="gor-li"><a class="linq-personal" asp-area="" asp-controller="Home" asp-action="TeachersList">Преподаватели</a></li>
+                <li class="gor-li"><a class="linq-personal" asp-area="" asp-controller="Home" asp-action="News">Новости</a></li>
+                <li disabled class="gor-li"><a class="linq-personal" href="#">Успеваемость</a></li>
+                <li class="gor-li"><a class="linq-personal" asp-area="" asp-controller="Home" asp-action="Index">Выход</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="content">
+        @if(academicPerfomances.Count != 0)
+        {
+            <div class="row">
+                <div class="col-6">
+                    <h1>Успеваемость</h1>
+                    <h2>Студент: <span>@academicPerfomances[0].StudentSurname  @academicPerfomances[0].StudentName</span></h2>
+                    <h2>Группа: @ViewBag.Group</h2>
+                    <hr>
+                    @for (int semesterIndex = 0; semesterIndex < listSemesterDiscipline.Count; semesterIndex++)
+                    {
+                        <h2>Семестр: @listSemesterDiscipline[semesterIndex].Item1</h2>
+
+                        int indexD = 1;
+                        @foreach (var discipline in @listSemesterDiscipline[semesterIndex].Item2)
+                        {
+                            <div class="row">
+                                <div class="col-1">
+                                    <span><b></b></span><br />
+                                    <span><b>@indexD) </b></span><br />
+                                    <span><b></b></span><br />
+                                    <span><b></b></span><br />
+                                </div>
+                                <div class="col-3">
+                                    <span><b>Предмет: </b></span><br />
+                                    <span><b>Оценка: </b></span><br />
+                                    <span><b>Дата сдачи: </b></span><br />
+                                    <span><b>Преподаватель: </b></span><br />
+                                </div>
+                                <div class="col-6">
+                                    <span>@discipline.DisciplineName</span><br />
+                                    <span>@discipline.Rating</span><br />
+                                    <span>@discipline.DateReceiptRating.Value.Day/@discipline.DateReceiptRating.Value.Month/@discipline.DateReceiptRating.Value.Year</span><br />
+                                    <span>@discipline.TeacherSurname @discipline.TeacherName</span><br />
+                                </div>
+                            </div>
+                            <hr />
+                            indexD++;
+                        }
+                        <hr>
+                    }
+                    <span><b>Заметили ошибку? звони +79969376719</b></span>
+                </div>
+            </div>
+        }
+        else
+        {
+            <h1>У вас еще нет ниодной оценки!</h1>
+        }
+    </div>
+</div>

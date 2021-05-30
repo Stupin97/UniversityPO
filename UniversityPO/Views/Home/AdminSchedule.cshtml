@@ -1,0 +1,46 @@
+﻿@using UniversityPO.Domain.Dto
+@using static UniversityPO.Content.ColorTZ
+@model ScheduleDto
+
+@{
+    var schedule = Model;
+}
+
+@using (Html.BeginForm("AdminSchedule", "Home", FormMethod.Post))
+{
+    <p>
+        <label>Id Расписания</label><br />
+        <input type="text" size="20" placeholder="ScheduleId" class="text-teacher" name="ScheduleId" value="@(schedule == null ? "" : schedule.ScheduleId.ToString())" @*@(student == null ? "" : "disabled")*@>
+    </p>
+    <p>
+        <label>Id Группы</label><br />
+        <input type="text" size="20" placeholder="GroupId" class="text-teacher" name="GroupId" value="@(schedule == null ? "" : schedule.GroupId)">
+    </p>
+    <p>
+        <label>Id дисциплины</label><br />
+        <input type="text" size="20" placeholder="DisciplineId" class="text-teacher" name="DisciplineId" value="@(schedule == null ? "" : schedule.DisciplineId.ToString())">
+    </p>
+    <p>
+        <label>Id преподавателя</label><br />
+        <input type="text" size="20" placeholder="TeacherId" class="text-teacher" name="TeacherId" value="@(schedule == null ? "" : schedule.TeacherId.ToString())">
+    </p>
+    <p>
+        <label>Id аудитории</label><br />
+        <input type="text" size="20" placeholder="ClassroomId" class="text-teacher" name="ClassroomId" value="@(schedule == null ? "" : schedule.ClassroomId.ToString())">
+    </p>
+    <p>
+        <label>Id дня недели</label><br />
+        <input type="text" size="20" placeholder="DayOfWeekId" class="text-teacher" name="DayOfWeekId" value="@(schedule == null ? "" : schedule.DayOfWeekId.ToString())">
+    </p>
+    <p>
+        <label>Id типа занятия</label><br />
+        <input type="text" size="20" placeholder="LessonTypeId" class="text-teacher" name="LessonTypeId" value="@(schedule == null ? "" : schedule.LessonTypeId.ToString())">
+    </p>
+    <p>
+        <label>Id пары</label><br />
+        <input type="text" size="20" placeholder="NumberLessonId" class="text-teacher" name="NumberLessonId" value="@(schedule == null ? "" : schedule.NumberLessonId.ToString())">
+    </p>
+    <p>
+        <input type="submit" value="@(schedule == null ? "Создать" : "Редактировать")" />
+    </p>
+}
