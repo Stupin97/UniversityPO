@@ -7,10 +7,10 @@ install:
   - dotnet restore
 
 script:
-  - dotnet publish UniversityPO -r win-x64 /p:PublishSingleFile=true --output win-x64
-  - dotnet publish UniversityPO -r win-x86 /p:PublishSingleFile=true --output win-x86
-  - dotnet publish UniversityPO -r linux-x64 /p:PublishSingleFile=true --output linux-x64
-  - dotnet publish UniversityPO -r osx-x64 /p:PublishSingleFile=true --output osx-x64
+  - dotnet publish UniversityPO --configuration Release --runtime win-x64 /p:PublishSingleFile=true --output win-x64
+  - dotnet publish UniversityPO --configuration Release --runtime win-x86 /p:PublishSingleFile=true --output win-x86
+  - dotnet publish UniversityPO --configuration Release --runtime linux-x64 /p:PublishSingleFile=true --output linux-x64
+  - dotnet publish UniversityPO --configuration Release --runtime osx-x64 /p:PublishSingleFile=true --output osx-x64
 
 before_deploy:
   - zip -r9 win-x64.zip win-x64
