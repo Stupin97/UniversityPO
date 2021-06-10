@@ -19,18 +19,18 @@ namespace UniversityPO.Controllers
         private static string StudentId = "";
         private static int TeacherId = 0;
 
-        private readonly ILogger<HomeController> _logger;
+        //private readonly ILogger<HomeController> _logger;
         private readonly IAuthService _authService;
         private readonly IUserInfoService _userInfoService;
         private readonly INewsService _newsService;
         private readonly IScheduleService _scheduleService;
         private readonly IAdminService _adminService;
 
-        public HomeController(ILogger<HomeController> logger, IAuthService authService,
+        public HomeController(/*ILogger<HomeController> logger,*/ IAuthService authService,
             IUserInfoService userInfoService, INewsService newsService,
             IScheduleService scheduleService, IAdminService adminService)
         {
-            _logger = logger;
+            //_logger = logger;
             _authService = authService;
             _userInfoService = userInfoService;
             _newsService = newsService;
@@ -65,6 +65,8 @@ namespace UniversityPO.Controllers
         [HttpPost]
         public async Task<IActionResult> Auth(string choice, string login, string password)
         {
+            string date = Helpers.GetDateTime(DateTime.Now);
+
             switch (choice)
             {
                 case "teacher":
@@ -92,7 +94,7 @@ namespace UniversityPO.Controllers
                     }
                     break;
                 case "admin":
-                    var resultA = await _authService.GetAdminAccessAsync(login, password);
+                    var resultA = _authService.GetAdminAccess(login, password);
                     if (resultA != null)
                     {
                         typeUser = "admin";
@@ -116,7 +118,8 @@ namespace UniversityPO.Controllers
 
             if (typeUser == "teacher")
             {
-                var result = await _userInfoService.GetTeacherByIdAsync(Int32.Parse(userId));
+                //var result = await _userInfoService.GetTeacherByIdAsync(Int32.Parse(userId));
+                var result = await _userInfoService.GetTeacherByIdAsync(userId);
 
                 return View("PersonalPageTeacher", result);
             }
@@ -169,9 +172,9 @@ namespace UniversityPO.Controllers
 
         [Route("Home/News")]
         [HttpGet]
-        public async Task<IActionResult> News()
+        public IActionResult News()
         {
-            var result = await _newsService.GetAllEventsAsync();
+            var result = _newsService.GetAllEvents();
 
             if (result != null)
             {
@@ -249,6 +252,13 @@ namespace UniversityPO.Controllers
         {
             if (student != null)
             {
+                if (student.Email == null || student.GroupId == null || student.IsHeadman == null || student.Login == null || student.Name == null || student.Password == null || student.Phone == null || student.Surname == null)
+                {
+                    ViewBag.Done = "Некорректные данные!";
+
+                    return View("PersonalPageAdmin");
+                }
+
                 if (isCreate)
                 {
                     var exStudent = await _adminService.ExistStudentAsync(student.StudentId);
@@ -289,25 +299,32 @@ namespace UniversityPO.Controllers
         [HttpGet]
         public async Task<IActionResult> AdminTeacher(string teacherId = "")
         {
-            if (teacherId != "")
-            {
-                var result = await _adminService.GetTeacherAsync(Int32.Parse(teacherId));
-
-                if (result == null)
+            try 
+            { 
+                if (teacherId != "")
                 {
-                    ViewBag.MesTeacher = "Не найден!";
+                    var result = await _adminService.GetTeacherAsync(Int32.Parse(teacherId));
 
-                    return View("PersonalPageAdmin");
+                    if (result == null)
+                    {
+                        ViewBag.MesTeacher = "Не найден!";
+
+                        return View("PersonalPageAdmin");
+                    }
+
+                    isCreate = false;
+
+                    return View("AdminTeacher", result);
                 }
 
-                isCreate = false;
+                isCreate = true;
 
-                return View("AdminTeacher", result);
+                return View("AdminTeacher", null);
             }
-
-            isCreate = true;
-
-            return View("AdminTeacher", null);
+            catch (FormatException ex)
+            {
+                throw;
+            }
         }
 
         [Route("Home/AdminTeacher")]
@@ -316,6 +333,13 @@ namespace UniversityPO.Controllers
         {
             if (teacher != null)
             {
+                if (teacher.AcademicDegreeId == null || teacher.DisciplineId == null || teacher.Email == null || teacher.Login == null || teacher.Name == null || teacher.Password == null || teacher.Phone == null || teacher.PositionId == null || teacher.Surname == null)
+                {
+                    ViewBag.Done = "Некорректные данные!";
+
+                    return View("PersonalPageAdmin");
+                }
+
                 if (isCreate)
                 {
                     var exTeacher = await _adminService.ExistTeacherAsync(teacher.TeacherId);
@@ -354,7 +378,7 @@ namespace UniversityPO.Controllers
 
         [Route("Home/AdminSchedule")]
         [HttpGet]
-        public async Task<IActionResult> AdminSchedule(string scheduleId = "")
+        public async Task<ActionResult> AdminSchedule(string scheduleId = "")
         {
             if (scheduleId != "")
             {
@@ -383,6 +407,13 @@ namespace UniversityPO.Controllers
         {
             if (schedule != null)
             {
+                if (schedule.ClassroomId == null || schedule.DayOfWeekId == null || schedule.DisciplineId == null || schedule.GroupId == null || schedule.LessonTypeId == null || schedule.NumberLessonId == null || schedule.TeacherId == null)
+                {
+                    ViewBag.Done = "Некорректные данные!";
+
+                    return View("PersonalPageAdmin");
+                }
+
                 if (isCreate)
                 {
                     var exSchedule = await _adminService.ExistScheduleAsync(schedule.ScheduleId);
