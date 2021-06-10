@@ -93,10 +93,13 @@
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<TeacherDto> GetTeacherByIdAsync(int teacherId)
+        //public async Task<TeacherDto> GetTeacherByIdAsync(int teacherId)
+        public async Task<TeacherDto> GetTeacherByIdAsync(string teacherId)
         {
+            int _teacherId = Int32.Parse(teacherId);
+
             return await _context.Teacher
-                .Where(c => c.TeacherId == teacherId)
+                .Where(c => c.TeacherId == _teacherId)
                 .Select(c => new TeacherDto
                 {
                     TeacherId = c.TeacherId,

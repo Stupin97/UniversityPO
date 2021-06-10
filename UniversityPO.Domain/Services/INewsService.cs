@@ -7,6 +7,6 @@
 
     public interface INewsService
     {
-        Task<List<EventDto>> GetAllEventsAsync();
+        List<EventDto> GetAllEvents();
     }
 }

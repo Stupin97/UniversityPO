@@ -25,16 +25,44 @@
 
         public void CreateStudent(Student student)
         {
-            _context.Student.Add(student);
+            try
+            {
+                if (student != null)
+                {
+                    _context.Student.Add(student);
 
-            _context.SaveChanges();
+                    _context.SaveChanges();
+                }
+            }
+            catch (DbUpdateException dbUEx)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public void EditStudent(Student student)
         {
-            _context.Student.Update(student);
+            try
+            {
+                if (student != null)
+                {
+                    _context.Student.Update(student);
 
-            _context.SaveChanges();
+                    _context.SaveChanges();
+                }
+            }
+            catch (DbUpdateException dbUEx)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public async Task<Teacher_C_E_Dto> GetTeacherAsync(int teacherId)
@@ -59,21 +87,56 @@
 
         public async Task<bool> ExistTeacherAsync(int teacherId)
         {
-            return await _context.Teacher.AnyAsync(c => c.TeacherId == teacherId);
+            try
+            {
+                return await _context.Teacher.AnyAsync(c => c.TeacherId == teacherId);
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
         }
 
         public void CreateTeacher(Teacher teacher)
         {
-            _context.Teacher.Add(teacher);
+            try
+            {
+                if (teacher != null)
+                {
+                    _context.Teacher.Add(teacher);
 
-            _context.SaveChanges();
+                    _context.SaveChanges();
+                }
+            }
+            catch (DbUpdateException dbUEx)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public void EditTeacher(Teacher teacher)
         {
-            _context.Teacher.Update(teacher);
+            try
+            {
+                if(teacher != null)
+                {
+                    _context.Teacher.Update(teacher);
 
-            _context.SaveChanges();
+                    _context.SaveChanges();
+                }
+            }
+            catch (DbUpdateException dbUEx)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public async Task<ScheduleDto> GetScheduleAsync(int scheduleId)
@@ -101,16 +164,44 @@
 
         public void CreateSchedule(Schedule schedule)
         {
-            _context.Schedule.Add(schedule);
+            try
+            {
+                if (schedule != null)
+                {
+                    _context.Schedule.Add(schedule);
 
-            _context.SaveChanges();
+                    _context.SaveChanges();
+                }
+            }
+            catch (DbUpdateException dbUEx)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public void EditSchedule(Schedule schedule)
         {
-            _context.Schedule.Update(schedule);
+            try
+            {
+                if (schedule != null)
+                {
+                    _context.Schedule.Update(schedule);
 
-            _context.SaveChanges();
+                    _context.SaveChanges();
+                }
+            }
+            catch (DbUpdateException dbUEx)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
     }
 }

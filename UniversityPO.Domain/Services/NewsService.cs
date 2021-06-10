@@ -1,6 +1,7 @@
 ﻿namespace UniversityPO.Domain.Services
 {
     using Microsoft.EntityFrameworkCore;
+    using Moq;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -11,14 +12,16 @@
     {
         private readonly UniversityContext _context;
 
+        public NewsService() { }
+
         public NewsService(UniversityContext context)
         {
             _context = context;
         }
 
-        public async Task<List<EventDto>> GetAllEventsAsync()
+        public List<EventDto> GetAllEvents()
         {
-            return await _context.Event
+            return _context.Event
                 .Where(c => c.IsHidden != true)
                 .Select(c => new EventDto
                 {
@@ -28,7 +31,24 @@
                     IsImportant = c.IsImportant,
                     IsUrgently = c.IsUrgently
                 })
-                .ToListAsync();
+                .ToList();
+        }
+
+        public List<EventDto> GetSortEvents(List<EventDto> events)
+        {
+            return events
+                .Where(c => c.Text != "")
+                .OrderBy(c => c.DatePublic)
+                .ToList();
+        }
+
+        public bool isFirstThreeIsImportantEvents(List<EventDto> events)
+        {
+            int countEvents = events.Count;
+
+            return countEvents > 3
+                ? events.Take(3).All(c => c.IsImportant == false)
+                : false;
         }
     }
 }

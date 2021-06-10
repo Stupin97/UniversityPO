@@ -20,7 +20,7 @@
             _context = context;
         }
 
-        public async Task<Admin> GetAdminAccessAsync(string login, string password)
+        public Admin GetAdminAccess(string login, string password)
         {
             var admin = Admin.GetAdmin();
 

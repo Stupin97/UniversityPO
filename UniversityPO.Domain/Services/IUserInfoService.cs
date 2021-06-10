@@ -11,7 +11,9 @@
 
         Task<StudentDto> GetStudentByIdAsync(string studentId);
 
-        Task<TeacherDto> GetTeacherByIdAsync(int teacherId);
+        //Task<TeacherDto> GetTeacherByIdAsync(int teacherId);
+        Task<TeacherDto> GetTeacherByIdAsync(string teacherId);
+
 
         Task<List<TeacherInfoDto>> GetInfoTeachers();
     }

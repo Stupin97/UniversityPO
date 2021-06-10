@@ -10,6 +10,6 @@
 
         Task<StudentDto> GetStudentAccessAsync(string login, string password);
 
-        Task<Admin> GetAdminAccessAsync(string login, string password);
+        Admin GetAdminAccess(string login, string password);
     }
 }
